@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const pool = require('../config/db');
+const sendEmail = require('../utils/sendEmail');
 
 // Generate a 6-digit OTP
 const generateOTP = () => Math.floor(100000 + Math.random() * 900000).toString();
@@ -41,13 +42,30 @@ const register = async (req, res, next) => {
     );
 
     const user = result.rows[0];
-    console.log(`📧 OTP for ${email}: ${otp}`);
+
+    // Send the real email
+    const emailHtml = `
+      <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; background-color: #f9f9f9; border-radius: 10px;">
+        <h2 style="color: #6366f1; text-align: center;">Welcome to Prosk Manager!</h2>
+        <p style="color: #333; font-size: 16px;">Hello <strong>${name}</strong>,</p>
+        <p style="color: #333; font-size: 16px;">Thank you for registering. Please use the following One-Time Password (OTP) to verify your email address. This code will expire in 10 minutes.</p>
+        <div style="background-color: #ffffff; padding: 15px; border-radius: 8px; text-align: center; margin: 20px 0; border: 2px dashed #6366f1;">
+          <h1 style="color: #6366f1; margin: 0; letter-spacing: 5px; font-size: 32px;">${otp}</h1>
+        </div>
+        <p style="color: #777; font-size: 14px; text-align: center;">If you did not request this, please ignore this email.</p>
+      </div>
+    `;
+
+    await sendEmail({
+      email: email,
+      subject: 'Prosk Manager - Verify Your Email',
+      html: emailHtml,
+    });
 
     res.status(201).json({
       success: true,
       message: 'Registration successful! OTP sent to your email.',
       userId: user.id,
-      otp: otp, // Remove in production
     });
   } catch (error) {
     next(error);
@@ -166,11 +184,28 @@ const resendOTP = async (req, res, next) => {
 
     console.log(`📧 New OTP for ${email}: ${otp}`);
 
+    // Send the real email
+    const emailHtml = `
+      <div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; background-color: #f9f9f9; border-radius: 10px;">
+        <h2 style="color: #6366f1; text-align: center;">Prosk Manager - New OTP</h2>
+        <p style="color: #333; font-size: 16px;">You requested a new verification code. Please use the following One-Time Password (OTP) to verify your email address. This code will expire in 10 minutes.</p>
+        <div style="background-color: #ffffff; padding: 15px; border-radius: 8px; text-align: center; margin: 20px 0; border: 2px dashed #6366f1;">
+          <h1 style="color: #6366f1; margin: 0; letter-spacing: 5px; font-size: 32px;">${otp}</h1>
+        </div>
+        <p style="color: #777; font-size: 14px; text-align: center;">If you did not request this, please ignore this email.</p>
+      </div>
+    `;
+
+    await sendEmail({
+      email: email,
+      subject: 'Prosk Manager - Your New OTP',
+      html: emailHtml,
+    });
+
     res.status(200).json({
       success: true,
       message: 'OTP resent successfully.',
       userId,
-      otp, // Remove in production
     });
   } catch (error) {
     next(error);

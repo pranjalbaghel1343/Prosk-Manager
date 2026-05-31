@@ -8,7 +8,7 @@ A modern, full-featured **Project & Task Management** web application built with
 
 ### 🔐 Authentication
 - **Signup & Login** with email/password
-- **OTP-based email verification** after registration
+- **OTP-based real email verification** after registration (via Nodemailer)
 - **JWT authentication** with auto-refresh and session persistence
 - Protected routes — unauthorized users auto-redirected to login
 
@@ -168,7 +168,13 @@ DB_PORT=5432
 DB_NAME=prosk_manager
 DB_USER=postgres
 DB_PASSWORD=your_password
+
+# Email configuration for real OTP delivery
+EMAIL_USER=your_gmail_address@gmail.com
+EMAIL_PASS=your_16_character_app_password
 ```
+
+> **Note on Email Config:** To send real emails, you must generate a **Google App Password** for `EMAIL_PASS`. Regular Gmail passwords will not work.
 
 ### Frontend `.env`
 ```env

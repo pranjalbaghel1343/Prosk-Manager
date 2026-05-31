@@ -70,7 +70,6 @@ const authSlice = createSlice({
     loading: false,
     error: null,
     pendingUserId: null,
-    pendingOTP: null,
     registerStep: 'form', // 'form' | 'otp'
   },
   reducers: {
@@ -79,7 +78,6 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       state.pendingUserId = null;
-      state.pendingOTP = null;
       state.registerStep = 'form';
       localStorage.removeItem('prosk_token');
       localStorage.removeItem('prosk_user');
@@ -94,7 +92,6 @@ const authSlice = createSlice({
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.loading = false;
       state.pendingUserId = action.payload.userId;
-      state.pendingOTP = action.payload.otp;
       state.registerStep = 'otp';
     });
     builder.addCase(registerUser.rejected, (state, action) => { state.loading = false; state.error = action.payload; });
@@ -108,7 +105,6 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       state.registerStep = 'form';
       state.pendingUserId = null;
-      state.pendingOTP = null;
     });
     builder.addCase(verifyOTP.rejected, (state, action) => { state.loading = false; state.error = action.payload; });
 
@@ -124,7 +120,6 @@ const authSlice = createSlice({
 
     // Resend OTP
     builder.addCase(resendOTP.fulfilled, (state, action) => {
-      state.pendingOTP = action.payload.otp;
       state.pendingUserId = action.payload.userId;
     });
 

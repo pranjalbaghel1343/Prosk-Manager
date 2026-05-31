@@ -65,7 +65,7 @@ const LoginForm = ({ onSwitch }) => {
 const OTPForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error, pendingUserId, pendingOTP } = useSelector((s) => s.auth);
+  const { loading, error, pendingUserId } = useSelector((s) => s.auth);
   const [otp, setOtp] = useState(['', '', '', '', '', '']);
   const inputs = useRef([]);
 
@@ -108,11 +108,6 @@ const OTPForm = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-      {pendingOTP && (
-        <div className="otp-hint">
-          📧 Demo OTP (remove in production): <strong style={{ fontSize: 18, letterSpacing: 6 }}>{pendingOTP}</strong>
-        </div>
-      )}
       {error && <div className="auth-error">⚠ {error}</div>}
       <p style={{ fontSize: 14, color: 'var(--text-muted)', textAlign: 'center' }}>
         Enter the 6-digit code sent to your email
