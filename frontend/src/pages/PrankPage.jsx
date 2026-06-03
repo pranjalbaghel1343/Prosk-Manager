@@ -1,6 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { logout } from '../store/slices/authSlice';
 
 const PrankPage = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    // Instantly destroy their session! 
+    // If they click the browser's back button, they will be kicked back to the login screen.
+    dispatch(logout());
+  }, [dispatch]);
+
   return (
     <div style={{
       display: 'flex',
