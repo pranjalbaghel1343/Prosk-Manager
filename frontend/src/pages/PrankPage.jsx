@@ -23,7 +23,7 @@ const PrankPage = () => {
         CHUTIYAAAA BANAYA TUMKOOO<br />
         BHAISSS KI BUCHIIIIIIIIIII 🐃
 
-        kaan ki baat sun koi bhi dusri id se krle hojaegaaa ye tohh prank thaa
+        kaan ki baat sun koi bhi dusri id se krle hojaegaaa ye tohh prank thaa khiikhiiii
       </h1>
     </div>
   );
