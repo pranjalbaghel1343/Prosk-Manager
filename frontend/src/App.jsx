@@ -6,6 +6,7 @@ import store from './store/store';
 import AuthPage from './pages/AuthPage';
 import Dashboard from './pages/Dashboard';
 import ProjectDetail from './pages/ProjectDetail';
+import PrankPage from './pages/PrankPage';
 import './index.css';
 
 // Protected Route wrapper
@@ -69,6 +70,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <ProjectDetail />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/prank"
+            element={
+              <ProtectedRoute>
+                <PrankPage />
               </ProtectedRoute>
             }
           />
