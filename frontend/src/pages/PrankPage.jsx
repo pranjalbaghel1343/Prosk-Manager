@@ -20,8 +20,10 @@ const PrankPage = () => {
         lineHeight: '1.2',
         textShadow: '0 0 20px rgba(239, 68, 68, 0.5)'
       }}>
-        PAGAL BANAYA TUMKOOO<br />
+        CHUTIYAAAA BANAYA TUMKOOO<br />
         BHAISSS KI BUCHIIIIIIIIIII 🐃
+
+        kaan ki baat sun koi bhi dusri id se krle hojaegaaa ye tohh prank thaa
       </h1>
     </div>
   );
