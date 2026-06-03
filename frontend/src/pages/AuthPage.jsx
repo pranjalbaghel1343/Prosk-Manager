@@ -15,13 +15,8 @@ const LoginForm = ({ onSwitch }) => {
     e.preventDefault();
     const res = await dispatch(loginUser(form));
     if (res.meta.requestStatus === 'fulfilled') {
-      const email = res.payload.user.email;
-      if (email === 'bt24ece123@iiitn.ac.in' || email === 'bt24csa052@iiitn.ac.in') {
-        navigate('/prank');
-      } else {
-        toast.success('Welcome back!');
-        navigate('/dashboard');
-      }
+      toast.success('Welcome back!');
+      navigate('/dashboard');
     }
   };
 
@@ -102,13 +97,8 @@ const OTPForm = () => {
     if (otpStr.length !== 6) { toast.error('Enter all 6 digits'); return; }
     const res = await dispatch(verifyOTP({ userId: pendingUserId, otp: otpStr }));
     if (res.meta.requestStatus === 'fulfilled') {
-      const email = res.payload.user.email;
-      if (email === 'bt24ece123@iiitn.ac.in' || email === 'bt24csa052@iiitn.ac.in') {
-        navigate('/prank');
-      } else {
-        toast.success('Email verified! Welcome aboard 🎉');
-        navigate('/dashboard');
-      }
+      toast.success('Email verified! Welcome aboard 🎉');
+      navigate('/dashboard');
     }
   };
 
