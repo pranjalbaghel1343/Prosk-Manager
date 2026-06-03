@@ -19,6 +19,7 @@ const generateToken = (userId, email) => {
 //  REGISTER
 // ─────────────────────────────────────────────
 const register = async (req, res, next) => {
+  const client = await pool.connect();
   try {
     const { name, email, password } = req.body;
 
@@ -26,16 +27,18 @@ const register = async (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Name, email and password are required.' });
     }
 
-    const existing = await pool.query('SELECT id FROM users WHERE email = $1', [email]);
+    const existing = await client.query('SELECT id FROM users WHERE email = $1', [email]);
     if (existing.rows.length > 0) {
       return res.status(400).json({ success: false, message: 'Email already registered.' });
     }
+
+    await client.query('BEGIN'); // Start Transaction
 
     const passwordHash = await bcrypt.hash(password, 10);
     const otp = generateOTP();
     const otpExpiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
-    const result = await pool.query(
+    const result = await client.query(
       `INSERT INTO users (name, email, password_hash, otp, otp_expires_at)
        VALUES ($1, $2, $3, $4, $5) RETURNING id, name, email`,
       [name, email, passwordHash, otp, otpExpiresAt]
@@ -62,13 +65,18 @@ const register = async (req, res, next) => {
       html: emailHtml,
     });
 
+    await client.query('COMMIT'); // Commit Transaction only if email succeeded
+
     res.status(201).json({
       success: true,
       message: 'Registration successful! OTP sent to your email.',
       userId: user.id,
     });
   } catch (error) {
+    await client.query('ROLLBACK'); // Rollback Transaction if email failed
     next(error);
+  } finally {
+    client.release();
   }
 };
 
@@ -145,6 +153,10 @@ const login = async (req, res, next) => {
 
     if (!isMatch) {
       return res.status(401).json({ success: false, message: 'Invalid email or password.' });
+    }
+
+    if (!user.otp_verified) {
+      return res.status(403).json({ success: false, message: 'Please verify your email via OTP before logging in.' });
     }
 
     const token = generateToken(user.id, user.email);
