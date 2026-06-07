@@ -125,13 +125,38 @@ export default function Bestfriend() {
       </div>
 
       <style>
-        {`
+        {\`
           @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
           }
-        `}
+        \`}
       </style>
+
+      {/* Manual Logout Button */}
+      <button
+        onClick={() => {
+          dispatch(logout());
+          navigate('/login', { replace: true });
+        }}
+        style={{
+          position: 'absolute',
+          bottom: '20px',
+          padding: '8px 16px',
+          backgroundColor: 'rgba(0,0,0,0.6)',
+          color: '#fff',
+          border: '1px solid rgba(255,255,255,0.2)',
+          borderRadius: '8px',
+          cursor: 'pointer',
+          fontSize: '0.9rem',
+          zIndex: 10000,
+          transition: 'background-color 0.2s'
+        }}
+        onMouseOver={(e) => (e.target.style.backgroundColor = 'rgba(0,0,0,0.8)')}
+        onMouseOut={(e) => (e.target.style.backgroundColor = 'rgba(0,0,0,0.6)')}
+      >
+        Not you? Log out
+      </button>
     </div>
   );
 }
