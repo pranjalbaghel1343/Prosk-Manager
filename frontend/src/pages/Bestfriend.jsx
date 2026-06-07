@@ -71,19 +71,49 @@ export default function Bestfriend() {
         gravity={0.15}
       />
 
-      <div style={{ padding: '20px', backgroundColor: 'rgba(0,0,0,0.4)', borderRadius: '20px', backdropFilter: 'blur(5px)', margin: '20px' }}>
-        <h1 style={{ fontSize: '4rem', fontWeight: '900', margin: '10px 0', color: '#ff4757', letterSpacing: '2px' }}>
-          HAPPPPPYYYYYYYY BESTFFFFF DAYYYYYYYYYYY
-        </h1>
-        <h2 style={{ fontSize: '3rem', fontWeight: '800', margin: '10px 0', color: '#ffa502', letterSpacing: '4px' }}>
-          GADHIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
-        </h2>
+      {/* Top Heading */}
+      <h1 style={{ 
+        position: 'absolute',
+        top: '8%',
+        width: '100%',
+        fontSize: '4rem', 
+        fontWeight: '900', 
+        margin: '0', 
+        color: '#ff4757', 
+        letterSpacing: '2px',
+        padding: '0 20px'
+      }}>
+        HAPPPPPYYYYYYYY BESTFFFFF DAYYYYYYYYYYY
+      </h1>
 
+      {/* Bottom Heading */}
+      <h2 style={{ 
+        position: 'absolute',
+        top: '60%',
+        width: '100%',
+        fontSize: '3.5rem', 
+        fontWeight: '800', 
+        margin: '0', 
+        color: '#ffa502', 
+        letterSpacing: '4px',
+        padding: '0 20px'
+      }}>
+        GADHIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII
+      </h2>
+
+      {/* Button / Surprise Text */}
+      <div style={{
+        position: 'absolute',
+        top: '75%',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        padding: '0 20px'
+      }}>
         {!showSurprise ? (
           <button
             onClick={() => setShowSurprise(true)}
             style={{
-              marginTop: '40px',
               padding: '15px 30px',
               fontSize: '1.5rem',
               fontWeight: 'bold',
@@ -103,7 +133,6 @@ export default function Bestfriend() {
         ) : (
           <div
             style={{
-              marginTop: '40px',
               padding: '20px',
               backgroundColor: 'rgba(255, 255, 255, 0.9)',
               borderRadius: '15px',
