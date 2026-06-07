@@ -6,19 +6,52 @@ import store from './store/store';
 import AuthPage from './pages/AuthPage';
 import Dashboard from './pages/Dashboard';
 import ProjectDetail from './pages/ProjectDetail';
+import Bestfriend from './pages/Bestfriend';
+import { useLocation } from 'react-router-dom';
 import './index.css';
 
 // Protected Route wrapper
 const ProtectedRoute = ({ children }) => {
   const token = localStorage.getItem('prosk_token');
+  const location = useLocation();
+  
   if (!token) return <Navigate to="/login" replace />;
+
+  try {
+    const userString = localStorage.getItem('prosk_user');
+    if (userString) {
+      const user = JSON.parse(userString);
+      const isBestFriend = user.email === 'bt24csa052@iiitn.ac.in' || user.email === 'bt24csa050@iiitn.ac.in';
+      
+      if (isBestFriend && location.pathname !== '/bestfriend') {
+        return <Navigate to="/bestfriend" replace />;
+      }
+      if (!isBestFriend && location.pathname === '/bestfriend') {
+        return <Navigate to="/dashboard" replace />;
+      }
+    }
+  } catch (err) {
+    console.error('Error parsing user data', err);
+  }
+
   return children;
 };
 
 // Public Route wrapper (redirect if already logged in)
 const PublicRoute = ({ children }) => {
   const token = localStorage.getItem('prosk_token');
-  if (token) return <Navigate to="/dashboard" replace />;
+  if (token) {
+    try {
+      const userString = localStorage.getItem('prosk_user');
+      if (userString) {
+        const user = JSON.parse(userString);
+        if (user.email === 'bt24csa052@iiitn.ac.in' || user.email === 'bt24csa050@iiitn.ac.in') {
+          return <Navigate to="/bestfriend" replace />;
+        }
+      }
+    } catch (e) {}
+    return <Navigate to="/dashboard" replace />;
+  }
   return children;
 };
 
@@ -61,6 +94,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bestfriend"
+            element={
+              <ProtectedRoute>
+                <Bestfriend />
               </ProtectedRoute>
             }
           />
